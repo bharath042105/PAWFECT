@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dog Adoption</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    @media (min-width: 768px) {
+      .grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    .hidden {
+      display: none;
+    }
+    #noDogsMessage {
+      color: black;
+      font-weight: bold;
+      position: fixed;
+      font-size: 50px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+    .modal-content {
+      background-color: #ffffff;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #100f0f;
+      width: 80%;
+      max-width: 600px;
+      border-radius: 10px;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body class="bg-blue-100 dark:bg-zinc-800">
+  <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+    <a href="{{ url_for('home') }}" class="absolute top-4 left-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Home</a>
+    <a href="{{ url_for('adopt_add') }}" class="absolute top-4 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add a pet</a>
+    <h1 class="text-4xl font-bold text-center text-zinc-900 dark:text-zinc-100 uppercase py-8">Dog Adoption</h1>
+
+    <!-- Filtering Options -->
+    <div class="mb-4 flex justify-center">
+      <select id="stateSelect" class="rounded-lg border-gray-300 dark:border-gray-700 focus:ring-blue-500 focus:border-blue-500 h-10 px-4">
+        <option value="" selected disabled>Select State</option>
+        {% set allStates = [] %}
+        {% for pet in pets %}
+          {% if pet.adopted == 0 %}
+            {% if pet.state not in allStates %}
+              <option value="{{ pet.state }}">{{ pet.state.title() }}</option>
+              {% set _ = allStates.append(pet.state) %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </select>
+      
+      <select id="citySelect" class="ml-4 rounded-lg border-gray-300 dark:border-gray-700 focus:ring-blue-500 focus:border-blue-500 h-10 px-4">
+        <option value="" selected disabled>Select City</option>
+      </select>
+      
+      <button id="searchBtn" class="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Search Dog</button>
+    </div>
+
+    <div id="dogList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <!-- Dynamic Dog Adoption Cards -->
+      {% for pet in pets %}
+      {% if pet.adopted == 0 %}
+      <div class="dog-card bg-white dark:bg-zinc-900 rounded-lg p-6 shadow-lg" data-state="{{ pet.state }}" data-city="{{ pet.city }}">
+        <div class="flex flex-col items-center space-y-4">
+          <img src="{{ pet.imageUrl }}" alt="Dog" class="rounded-lg">
+          <div class="text-lg font-semibold text-zinc-900 dark:text-zinc-100">{{ pet.petName }}</div>
+          <div class="text-zinc-500 dark:text-zinc-300">Age: {{ pet.age }}</div>
+          <div class="text-zinc-500 dark:text-zinc-300">Breed: {{ pet.breed }}</div>
+          <div class="text-zinc-500 dark:text-zinc-300">Gender: {{ pet.gender }}</div>
+          <div class="text-zinc-500 dark:text-zinc-300">Vaccinated: {{ pet.vaccinated }}</div>
+          <div class="text-zinc-500 dark:text-zinc-300">State: {{ pet.state }}</div>
+          <div class="text-zinc-500 dark:text-zinc-300">City: {{ pet.city }}</div>
+          <div class="text-zinc-500 dark:text-zinc-300">Owner: {{ pet.ownerName }}</div>
+          <div class="text-zinc-500 dark:text-zinc-300">Contact: {{ pet.contact }}</div>
+          <button class="adopt-now-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            data-pet-id='{{ pet.id }}'>Adopt Now</button>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    <div id="noDogsMessage" class="hidden text-red-500 font-semibold">No dogs available.</div>
+  </div>
+
+  <div id="adoptionModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 class="text-2xl font-semibold mb-4">Adoption Form</h2>
+      <form id="adoptionForm" action="{{ url_for('submit_adoption_form') }}" method="post" onsubmit="return validateAdoptionForm()">
+        <div class="mb-4">
+          <label for="name" class="block font-medium text-gray-700">Name:</label>
+          <input type="text" id="name" name="name" class="rounded-lg border-black focus:ring-blue-500 focus:border-blue-500 h-10 px-4" required>
+        </div>
+        <div class="mb-4">
+          <label for="contact" class="block font-medium text-gray-700">Contact:</label>
+          <input type="tel" id="contact" name="contact" class="rounded-lg border-black focus:ring-blue-500 focus:border-blue-500 h-10 px-4" pattern="[0-9]{10}" required>
+        </div>
+        <div class="mb-4">
+          <label for="location" class="block font-medium text-gray-700">Location:</label>
+          <input type="text" id="location" name="location" class="rounded-lg border-black focus:ring-blue-500 focus:border-blue-500 h-10 px-4" required>
+        </div>
+
+        <div class="mb-4">
+          <input type="hidden" id="pet_id" name="pet_id">
+        </div>
+        <div class="mb-4">
+          <button type="submit" id="submitAdoptionForm" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function populateCities() {
+      var stateSelect = document.getElementById('stateSelect');
+      var citySelect = document.getElementById('citySelect');
+      citySelect.innerHTML = '';
+
+      var cities = [];
+
+      // Loop through all pets to collect unique cities
+      {% for pet in pets %}
+      {% if pet.adopted == 0 %}
+      if (!cities.includes("{{ pet.city }}")) {
+        cities.push("{{ pet.city }}");
+      }
+      {% endif %}
+      {% endfor %}
+
+      // Add collected cities as options to the dropdown
+      cities.forEach(function (city) {
+        var option = document.createElement('option');
+        option.value = city;
+        option.textContent = city.charAt(0).toUpperCase() + city.slice(1);
+        citySelect.appendChild(option);
+      });
+    }
+
+    document.getElementById('stateSelect').addEventListener('change', populateCities);
+    populateCities();
+
+    document.getElementById('searchBtn').addEventListener('click', function () {
+      var state = document.getElementById('stateSelect').value;
+      var city = document.getElementById('citySelect').value;
+      filterDogs(state, city);
+    });
+
+    function filterDogs(state, city) {
+      var dogCards = document.querySelectorAll('.dog-card');
+      var noDogsMessage = document.getElementById('noDogsMessage');
+      var dogsFound = false;
+
+      dogCards.forEach(function (card) {
+        var cardState = card.getAttribute('data-state').toLowerCase();
+        var cardCity = card.getAttribute('data-city').toLowerCase();
+
+        if (state.toLowerCase() === cardState && (city === "" || city.toLowerCase() === cardCity)) {
+          card.classList.remove('hidden');
+          dogsFound = true;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      if (!dogsFound) {
+        noDogsMessage.style.display = 'block';
+      } else {
+        noDogsMessage.style.display = 'none';
+      }
+    }
+
+    var adoptButtons = document.querySelectorAll('.adopt-now-btn');
+    adoptButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        var petId = button.getAttribute('data-pet-id');
+        document.getElementById('pet_id').value = petId;
+        console.log(petId);
+        document.getElementById('adoptionModal').style.display = 'block';
+      });
+    });
+
+    var modal = document.getElementById('adoptionModal');
+    var span = document.getElementsByClassName('close')[0];
+
+    span.onclick = function () {
+      modal.style.display = 'none';
+    };
+
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    };
+
+    function validateAdoptionForm() {
+      var contactInput = document.getElementById('contact');
+      var contactPattern = /[0-9]{10}/;
+
+      if (!contactPattern.test(contactInput.value)) {
+        alert('Contact number must be 10 digits.');
+        contactInput.focus();
+        return false;
+      }
+
+      // Additional form validation logic can be added here
+
+      return true;
+    }
+  </script>
+</body>
+
+</html>

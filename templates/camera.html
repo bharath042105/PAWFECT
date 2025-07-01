@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Capture</title>
+    <style>
+        #video-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+        }
+        video {
+            width: 100%;
+            height: auto;
+        }
+        #capture-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #359977;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        canvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video id="video" autoplay></video>
+        <button id="capture-btn">Capture</button>
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <script>
+        // Get access to the camera stream
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                var video = document.getElementById('video');
+                video.srcObject = stream;
+            })
+            .catch(function(err) {
+                console.log("An error occurred: " + err);
+            });
+
+        // Capture frame from the video stream
+        document.getElementById('capture-btn').addEventListener('click', function() {
+            var video = document.getElementById('video');
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            // Convert canvas image to data URL
+            var dataURL = canvas.toDataURL('image/jpeg');
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/capture';
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'image_data';
+            input.value = dataURL;
+            form.appendChild(input);
+            // Append the form to the document body and submit it
+            document.body.appendChild(form);
+            form.submit();
+            video.pause();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Gateway</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  <style>
+    .error {
+      border-color: red;
+    }
+    .error-message {
+      color: red;
+      font-size: 0.875rem;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <div class="container mx-auto py-10">
+    <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+      <h1 class="text-2xl font-bold mb-6">Payment Gateway</h1>
+      <div id="totalAmountSection" class="mb-4">
+        <label>Total Amount:</label>
+        <span >{{ TOTAL }}</span>
+      </div>
+      
+     
+      <form id="paymentForm">
+        <div class="mb-4">
+           
+          <label for="paymentMethod" class="block text-gray-700">Select Payment Method</label>
+          <select id="paymentMethod" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+            <option value="card">Credit/Debit Card</option>
+            <option value="upi">UPI Payment</option>
+            <option value="netbanking">Net Banking</option>
+          </select>
+        </div>
+
+        <div id="cardPayment" class="payment-option">
+          <div class="mb-4">
+            <label for="cardNumber" class="block text-gray-700">Card Number</label>
+            <input type="text" id="cardNumber" placeholder="123456789012" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+            <p id="cardNumberError" class="error-message hidden">Please enter a valid 12-digit card number.</p>
+          </div>
+          <div class="mb-4">
+            <label for="expiryMonth" class="block text-gray-700">Expiry Month</label>
+            <input type="number" id="expiryMonth" placeholder="MM" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500" min="1" max="12">
+          </div>
+          <div class="mb-4">
+            <label for="expiryYear" class="block text-gray-700">Expiry Year</label>
+            <input type="number" id="expiryYear" placeholder="YYYY" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+            <p id="expiryDateError" class="error-message hidden">Please enter a valid expiry date.</p>
+          </div>
+          <div class="mb-4">
+            <label for="cvv" class="block text-gray-700">CVV</label>
+            <input type="text" id="cvv" placeholder="123" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+            <p id="cvvError" class="error-message hidden">Please enter a valid 3-digit CVV.</p>
+          </div>
+        </div>
+
+        <div id="upiPayment" class="payment-option hidden">
+          <div class="mb-4">
+            <label for="upiId" class="block text-gray-700">UPI ID</label>
+            <input type="text" id="upiId" placeholder="example@upi" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+            <p id="upiIdError" class="error-message hidden">Please enter a valid UPI ID.</p>
+          </div>
+        </div>
+
+        <div id="netbankingPayment" class="payment-option hidden">
+          <div class="mb-4">
+            <label for="bankName" class="block text-gray-700">Bank Name</label>
+            <input type="text" id="bankName" placeholder="Bank Name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+          </div>
+          <div class="mb-4">
+            <label for="accountNumber" class="block text-gray-700">Account Number</label>
+            <input type="text" id="accountNumber" placeholder="123456789012" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+          </div>
+          <div class="mb-4">
+            <label for="username" class="block text-gray-700">Username</label>
+            <input type="text" id="username" placeholder="Username" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+          </div>
+          <div class="mb-4">
+            <label for="password" class="block text-gray-700">Password</label>
+            <input type="password" id="password" placeholder="Password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+          </div>
+        </div>
+
+        <button type="submit"  class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Submit Payment
+        </button>
+      </form>
+    </div>
+  </div>
+  <script src="{{ url_for('static',filename='petshop/script.js')}}"></script>
+
+  <script>
+    document.getElementById('paymentMethod').addEventListener('change', function() {
+      document.querySelectorAll('.payment-option').forEach(option => option.classList.add('hidden'));
+      const selectedOption = this.value;
+      document.getElementById(`${selectedOption}Payment`).classList.remove('hidden');
+    });
+
+    document.getElementById('paymentForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      if (validateForm()) {
+        alert('Payment successful!');
+        window.location.href='/previous';
+      }
+    });
+
+    function validateForm() {
+      const paymentMethod = document.getElementById('paymentMethod').value;
+      let isValid = true;
+
+      if (paymentMethod === 'card') {
+        const cardNumber = document.getElementById('cardNumber').value;
+        if (!/^\d{12}$/.test(cardNumber)) {
+          document.getElementById('cardNumber').classList.add('error');
+          document.getElementById('cardNumberError').classList.remove('hidden');
+          isValid = false;
+        } else {
+          document.getElementById('cardNumber').classList.remove('error');
+          document.getElementById('cardNumberError').classList.add('hidden');
+        }
+
+        const expiryMonth = parseInt(document.getElementById('expiryMonth').value, 10);
+        const expiryYear = parseInt(document.getElementById('expiryYear').value, 10);
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth() + 1; // getMonth() is zero-based
+
+        if (expiryYear < currentYear || (expiryYear === currentYear && expiryMonth < currentMonth)) {
+          document.getElementById('expiryMonth').classList.add('error');
+          document.getElementById('expiryYear').classList.add('error');
+          document.getElementById('expiryDateError').classList.remove('hidden');
+          isValid = false;
+        } else {
+          document.getElementById('expiryMonth').classList.remove('error');
+          document.getElementById('expiryYear').classList.remove('error');
+          document.getElementById('expiryDateError').classList.add('hidden');
+        }
+
+        const cvv = document.getElementById('cvv').value;
+        if (!/^\d{3}$/.test(cvv)) {
+          document.getElementById('cvv').classList.add('error');
+          document.getElementById('cvvError').classList.remove('hidden');
+          isValid = false;
+        } else {
+          document.getElementById('cvv').classList.remove('error');
+          document.getElementById('cvvError').classList.add('hidden');
+        }
+      }
+
+      if (paymentMethod === 'upi') {
+        const upiId = document.getElementById('upiId').value;
+        if (!/^[a-zA-Z0-9.\-]+@[a-zA-Z0-9.\-]+$/.test(upiId)) {
+          document.getElementById('upiId').classList.add('error');
+          document.getElementById('upiIdError').classList.remove('hidden');
+          isValid = false;
+        } else {
+          document.getElementById('upiId').classList.remove('error');
+          document.getElementById('upiIdError').classList.add('hidden');
+        }
+      }
+
+      if (paymentMethod === 'netbanking') {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        if (username.trim() === '') {
+          document.getElementById('username').classList.add('error');
+          isValid = false;
+        } else {
+          document.getElementById('username').classList.remove('error');
+        }
+
+        if (password.trim() === '') {
+          document.getElementById('password').classList.add('error');
+          isValid = false;
+        } else {
+          document.getElementById('password').classList.remove('error');
+        }
+      }
+
+      return isValid;
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      // Retrieve total amount from query parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const totalAmount = urlParams.get('total');
+
+      // Display total amount on the payment page
+      document.getElementById('totalAmount').innerText = `Total Amount: ₹${totalAmount}`;
+});
+
+  </script>
+</body>
+</html>

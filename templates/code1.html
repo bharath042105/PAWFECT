@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>pawfect care</title>
+</head>
+<body>
+    <script>
+        function opentab(tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-contents");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-links");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active-link", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            event.currentTarget.className += " active-link";
+        }
+        function validateForm() {
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            var message = document.getElementById('message').value;
+    
+            return false;
+        }
+        return true;
+    
+</script>
+
+<div id="header">
+    <div class="container">
+        <nav>
+            <img src="logo.jpg" class="logo" width="200px">
+            <ul id="sidemenu">
+                <li><a href="#header">addoption assitance</a></li>
+                <li><a href="#about">gromming service</a></li>
+                <li><a href="#Must_vistit_areas">care center</a></li>
+                <li><a href="#contact">breed identifiction</a></li>
+                <li><a href="#google-map">community support</a></li>
+                <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
+            </ul>
+            <i class="fa-solid fa-bars" onclick="openmenu()"></i>
+        </nav>
+        <div class="header-text">
+            <h1>pawfectcare platform</h1>
+        </div>
+    </div>
+</div>
+
+<div id="about">
+    <div class="container">
+        <div class="row">
+            <div class="about-col-1">
+                <img src="img3.jpg" alt="">
+            </div>
+            <div class="about-col-2">
+                <h1 class="sub-title">About platform</h1>
+                <p>
+                    Pets are cherished members of many households, but ensuring their
+                     well-being requires access to essential services and resources. Additionally,  
+                     understanding a pet's breed is crucial for tailoring care and addressing specific needs.
+                      We aim to empower pet owners to provide the best possible care for their beloved companions
+                </p>
+                <div class="tab-titles">
+                    <p class="tab-links active-link" onclick="opentab('temples')">Temples</p>
+                    <p class="tab-links" onclick="opentab('Amusement_Parks')">Amusementb Park</p>
+                    <p class="tab-links" onclick="opentab('Tourist_Places')">Tourist Places</p>
+                    <p class="tab-links" onclick="opentab('malls')">Malls</p>
+                </div>
+                <div class="tab-contents active-tab" id="temples">
+                    <ul>
+                        <li><span>Birla Mandir</span></li>
+                        <li><span>Peddamma Temple</span></li>
+                        <li><span>Puri Jagannath Swami Temple</span></li>
+                        <li><span>Chilkuru Temple</span></li>
+                        <li><span>Lotus Temple</span></li>
+                        <li><span>TDD Temple</span></li>
+                        <li><span>Iscon Temple</span></li>
+                    </ul>
+                </div>
+                <div class="tab-contents" id="Amusement_Parks">
+                    <ul>
+                        <li><span>Wonderla</span></li>
+                        <li><span>Ocrean Park</span></li>
+                        <li><span>Jalvihar</span></li>
+                        <li><span>Mount pera</span></li>
+                        <li><span>District garvity</span></li>
+                        <li><span>Thrill City</span></li>
+                    </ul>
+                </div>
+                <div class="tab-contents" id="Tourist_Places">
+                    <ul>
+                        <li><span>Golconda</span></li>
+                        <li><span>Chowmohallah Palace</span></li>
+                        <li><span>Falaknama Palace</span></li>
+                        <li><span>Quli Quthabsha Tombs</span></li>
+                        <li><span>Tank Bund</span></li>
+                        <li><span>Charminar</span></li>
+                    </ul>
+                </div>
+                <div class="tab-contents" id="malls">
+                    <ul>
+                        <li><span>GVK</span></li>
+                        <li><span>Sharath City</span></li>
+                        <li><span>Inorbit</span></li>
+                        <li><span>Manjira</span></li>
+                        <li><span>Lulu</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="back-to-top">Back to Top</a>
+</div>
+<div id="Must_vistit_places">
+    <div class="container">
+        <h1 class="sub-title">Must Visit Places</h1>
+        <div class="work-list">
+            <div class="work">
+                <img src="temple.jpg" alt="">
+                <div class="layer">
+                    <h3>Temple</h3>
+                    <p>"Hyderabad's spiritual panorama embraces diverse temples like Birla Mandir, a marvel in white marble, and Jagannath Temple, an architectural gem. The Chilkur Balaji Temple, known for wish fulfillment, and the Karmanghat Hanuman Temple, rich in history, add depth to the city's religious allure, inviting devotees from all walks."</p>
+                    <a href="#"> <i class="fa-solid fa-right-to-bracket"></i></a>
+                </div>
+            </div>
+            <div class="work">
+                <img src="ap.jpg" alt="">
+                <div class="layer">
+                    <h3>Amusement Park</h3>
+                    <p>"Hyderabad features exciting amusement parks for thrilling experiences. Ramoji Film City, one of the world's largest film studios, combines cinematic wonders with amusement rides. Wonderla Hyderabad offers a diverse range of adrenaline-pumping attractions, while Jalavihar Water Park is a popular destination for water-based adventures. These parks provide entertainment for visitors of all ages, making Hyderabad a vibrant hub for amusement enthusiasts."</p>
+                    r amusement enthusiasts."</p>
+                    <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                </div>
+            </div>
+            <div class="work">
+                <img src="tour.jpg" alt="">
+                <div class="layer">
+                    <h3>Tourist Places</h3>
+                    <p>"Hyderabad, a captivating blend of history and modernity, hosts iconic tourist destinations. The Charminar, a 16th-century masterpiece, and the historic Golconda Fort showcase the city's rich heritage. The Chowmohallah Palace, once the seat of the Nizams, exudes opulence. Explore the Salar Jung Museum's extensive collection or revel in the serene Birla Mandir. The innovative Ramoji Film City offers a cinematic experience, while Hussain Sagar Lake and Necklace Road provide scenic tranquility. Hyderabad's tech prowess is evident in places like HITEC City. With its vibrant bazaars, diverse cuisine, and warm hospitality, Hyderabad is a cultural kaleidoscope inviting exploration."</p>
+                    <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                </div>
+            </div>
+            <div class="work">
+                <img src="mall.jpg" alt="">
+                <div class="layer">
+                    <h3>Malls</h3>
+                    <p>"Hyderabad boasts a dynamic shopping scene with modern malls catering to diverse tastes. Inorbit Mall, Forum Sujana Mall, and GVK One Mall offer a blend of international brands, entertainment, and culinary delights, making them popular destinations for both locals and visitors, enhancing the city's retail experience."</p>
+                    <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="btn">See more</a>
+    </div>
+    <a href="#" class="back-to-top">Back to Top</a>
+</div>
+
+<div id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="contact-left">
+                <h1 class="sub-title">Contact Me</h1>
+                <p><i class="fa-solid fa-phone"></i>contact@xyz.com</p>
+                <p><i class="fa-duotone fa-phone"></i>123456890</p>
+                <div class="social-icons">
+                    <a href="https://facebook.com/"><i class="fa-brands fa-facebook"></i></a>
+                    <a href=""><i class="fa-brands fa-twitter-square"></i></a>
+                    <a href=""><i class="fa-brands fa-instagram"></i></a>
+                    <a href=""><i class="fa-brands fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="contact-right">
+                <form>
+                    <input type="text" id="name" name="Name" placeholder="Your Name" required>
+                    <input type="email" id="email" name="email" placeholder="Your email" required>
+                    <textarea id="message" name="Message" rows="6" placeholder="Your Message" required></textarea>
+                    <button type="submit" class="btn btn2" onclick="validateForm()">Submit</button>                        
+                </form>
+            </div>    
+        </div>
+    </div>
+    <a href="#" class="back-to-top">Back to Top</a>
+</div>
+<div id="google-map">
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.9226644021617!2d78.45872651438865!3d17.385044990209606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb99c8edc438b5%3A0x9c0ec4293f3b4ae2!2sHyderabad%2C%20Telangana%2C%20India!5e0!3m2!1sen!2sus!4v1647473825204!5m2!1sen!2sus"
+        width="100%"
+        height="450"
+        height="450"
+        style="border: 0;"
+        allowfullscreen=""
+        loading="lazy"
+        scrolling="yes"
+    ></iframe>
+</div>  
+<section id="section5">
+    <h2> Vasavi college website link</h2>
+    <h2> <a href="https://www.vce.ac.in/" target="_blank">VCE_Website</a> </h2>
+    <a href="#" class="back-to-top">Back to Top</a>
+</section>  
+
+<script>
+    document.querySelectorAll('.back-to-top').forEach(link => {
+        link.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+</body>
+</html>

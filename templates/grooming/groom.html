@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pet Hygiene and Grooming</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <style>
+        /* Add your custom styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("{{ url_for('static', filename='i6.png') }}");
+            /* Replace with your image URL */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        .overlay-image {
+            position: absolute;
+            top: 250px;
+            left: 900px;
+        }
+
+        h1 {
+            color: #380bcb;
+            text-align: center;
+            font-size: 50px;
+        }
+
+        .para {
+            overflow: hidden;
+            font-size: 30px;
+        }
+
+        .image {
+            float: right;
+            margin: 0 0 10px 10px;
+        }
+
+        ul {
+            list-style-type: disc;
+        }
+
+        section {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #0e1111;
+            cursor: pointer;
+            font-size: 30px;
+        }
+
+        a:visited {
+            color: #ef5770;
+
+        }
+
+        a:hover {
+            font-size: 25px;
+            color: #151515;
+
+        }
+
+        a:active {
+            color: #f7d794;
+
+        }
+
+        tip {
+            background-color: #f2f2f2;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .tip h2 {
+            color: #555;
+        }
+
+        .tip p {
+            color: #777;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body class="bg-blue-100 dark:bg-zinc-800">
+    <header>
+        <h1>Pet Hygiene and Grooming</h1>
+    </header>
+    
+        <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+          <a href="{{url_for('home')}}" class="absolute top-4 left-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Home</a>
+        </div>
+      
+    
+    <nav class="nav-links">
+        <a href="#" onclick="toggleSection('resources')">Resources</a>
+        <a href="#" onclick="toggleSection('tips')">Tips</a>
+        <a href="/vans" onclick="toggleSection('groomers')">Professional Groomers</a>
+    </nav>
+    <div class="para">
+        <img src="{{url_for('static',filename='i1.jpg')}}" alt="Your Image" class="image">
+        <p>
+            Maintaining the hygiene and health of our furry companions is a crucial responsibility for pet owners.
+            Regular grooming plays a pivotal role in achieving this goal. Let’s delve into the importance of various
+            grooming practices, including brushing, nail trimming, and bathing, and discover how they contribute to your
+            pet’s overall well-being.
+        </p>
+        <p>
+            Addition to our grooming services, we offer a wealth of resources for pet owners. You can find helpful
+            articles, books, and other related information about pet care here. Whether you’re looking for tips on
+            nutrition, behavior, or health, we’ve got you covered.
+        </p>
+    </div>
+
+    <section id="resources">
+        <h2 style="font-size: 30px;">Resources</h2>
+        <p style="font-size: 30px;">Here you can find helpful resources for pet hygiene and grooming:</p>
+        <ul>
+            <li style="font-size: 25px;"><b>Articles</b></li>
+            <img src="{{url_for('static',filename='i7.jpg')}}" style="float:right; height: 300px;" alt="Articles Image">
+            <ol type="1">
+                <li>
+                    <a href="https://wigglytails.in/blog/the-ultimate-guide-to-dog-grooming-tips-tricks/"
+                        target="_blank"><b>The Ultimate Guide to Dog
+                            Grooming</b></a><br>
+                    <img src="{{url_for('static',filename='g1.jpg')}}" style="float:none; height: 150px;" alt="AKC Dog Grooming Guide">
+                    <p>This comprehensive guide by The American Kennel Club (AKC) covers everything you need to know
+                        about dog grooming, from basic techniques to breed-specific tips.</p>
+                </li>
+                <li>
+                    <a href="https://yourdogadvisor.com/dog-grooming-tips/" target="_blank"><b>10 Essential Dog
+                            Grooming Tips</b></a><br>
+                    <img src="{{url_for('static',filename='g2.jpg')}}" style="float:none; height: 150px;" alt="Petfinder Dog Grooming Tips">
+                    <p>This article by Petfinder provides practical advice on dog grooming, including brushing, bathing,
+                        and nail trimming, perfect for maintaining your dog's hygiene at home.</p>
+                </li>
+                <li>
+                    <a href="https://www.thewildest.com/dog-health/how-to-groom-dog-at-home" target="_blank"><b>Pet Care
+                            Tips: How to Groom
+                            Your Dog at Home</b></a><br>
+                    <img src="{{url_for('static',filename='g3.jpg')}}" style="float:none; height: 150px;" alt="The Spruce Pets Dog Grooming Tips">
+                    <p>The Spruce Pets offers step-by-step instructions and helpful videos for grooming your dog at
+                        home, covering brushing, bathing, and more to keep your furry friend looking and feeling their
+                        best.</p>
+                </li>
+            </ol>
+        </ul>
+        <ul>
+            <li style="font-size: 25px;"><b>Books</b></li>
+            <ol type="1">
+                <li>
+                    <b>The Complete Dog Breed Book: Choose the Perfect Dog for You</b> by DK<br>
+                    <img src="{{url_for('static',filename='b1.jpg')}}" style="float:none; height: 150px;" alt="The Complete Dog Breed Book">
+                    <p>This book offers an extensive guide to over 400 dog breeds, providing insights into their
+                        grooming
+                        needs, temperament, exercise requirements, and more. It's an invaluable resource for individuals
+                        looking to select the ideal dog breed for their lifestyle.</p>
+                </li>
+                <li>
+                    <b>The Dog Groomer's Manual: A Definitive Guide to the Science, Practice, and Art of Dog
+                        Grooming</b> by
+                    Jorge Bendersky<br>
+                    <img src="{{url_for('static',filename='b2.jpeg')}}" style="float:none; height: 150px;" alt="The Dog Groomer's Manual">
+                    <p>Authored by a renowned dog groomer, this manual covers the entire spectrum of professional dog
+                        grooming. It delves into equipment, techniques, handling different coat types, and grooming
+                        specific
+                        breeds, making it an essential reference for aspiring and experienced groomers alike.</p>
+                </li>
+                <li>
+                    <b>The Everything Dog Grooming Book: All You Need to Help Your Pet Look and Feel Great!</b> by Sandy
+                    Blackburn<br>
+                    <img src="{{url_for('static',filename='b3.jpg')}}" style="float:none; height: 150px;" alt="The Everything Dog Grooming Book">
+                    <p>This comprehensive guide is tailored for pet owners who wish to groom their dogs at home. It
+                        covers
+                        various grooming aspects, including bathing, brushing, nail trimming, and ear cleaning,
+                        empowering
+                        readers to maintain their dog's hygiene between professional grooming appointments.</p>
+                </li>
+                <li>
+                    <b>The Well-Adjusted Dog: Dr. Dodman's 7 Steps to Lifelong Health and Happiness for Your Best
+                        Friend</b>
+                    by Nicholas Dodman<br>
+                    <img src="{{url_for('static',filename='b4.jpg')}}" style="float:none; height: 150px;" alt="The Well-Adjusted Dog">
+                    <p>Written by an esteemed veterinarian, this book outlines seven steps to ensure the health and
+                        happiness of dogs. It encompasses advice on nutrition, exercise, training, and grooming, serving
+                        as
+                        a holistic guide for dog owners aiming to provide optimal care for their pets.</p>
+                </li>
+                <li>
+                    <b>Dog Grooming For Dummies</b> by Margaret H. Bonham<br>
+                    <img src="{{url_for('static',filename='b5.jpg')}}" style="float:none; height: 150px;" alt="Dog Grooming For Dummies">
+                    <p>Tailored for beginners, this book offers a comprehensive overview of dog grooming essentials. It
+                        covers topics such as tools, techniques, coat maintenance, and skin health, providing pet owners
+                        with practical guidance to groom their dogs effectively at home.</p>
+                </li>
+            </ol>
+        </ul>
+        <ul>
+            <li style="font-size: 25px;"><b>Online tutorials</b></li>
+            <p>Here are some youtube tutorials for your reference</p>
+            <ol type="1">
+                <li>Ready to learn the complete step-by-step instructions on how to <b>bathe</b> your dog?<a
+                        href="https://youtu.be/MCvrxJgy8r0?si=2b6C_PlyKAxnNMgm" target="_blank">Click Here</a>for all
+                    the details!
+                </li>
+                <li>Interested in mastering all the <b>grooming basics</b> for your furry companion?<a
+                        href="https://youtu.be/db5whSI6rZE?si=ZvXTC7Mb4JGdn8Eg" target="_blank">Click Here</a>to uncover
+                    the essential techniques and tips!
+                </li>
+                <li>Looking to maintain your dog's <b>dental health</b> with ease?<a
+                        href="https://youtu.be/PsNlLLSBWLU?si=pL6C6NY-5mS_q2Hq" target="_blank">Click Here</a> for a
+                    comprehensive guide on how to brush your dog's teeth!</li>
+                <li>Curious about keeping your paw friend's <b>nails</b> tidy and healthy? <a
+                        href="https://youtu.be/sisprxhsc6I?si=_QaMUVRFjNCwi87u" target="_blank">Click Here</a>to
+                    discover how to trim your dog's nails with ease! </li>
+                <li>Ready to ensure your dog's <b>ears</b> stay clean and healthy?<a
+                        href="https://youtu.be/5C39A9UU720?si=xRf2HUXL7Xt4yLiG" target="_blank">Click Here</a>for a
+                    helpful tutorial on dog ear cleaning!</li>
+            </ol>
+        </ul>
+    </section>
+
+
+    <section id="tips">
+        <h1>Pet Hygiene and Grooming Tips</h1>
+        <ul>
+            <li class="tip">
+                <h2>Regular Bathing</h2>
+                <p>Bathe your pet regularly using a pet-friendly shampoo. The frequency of baths depends on your pet's
+                    breed, lifestyle, and skin condition. Over-bathing can strip their skin of natural oils, so aim for
+                    a balance.</p>
+                <p>For most dogs, a bath every 4-6 weeks is sufficient. However, some breeds with oily coats may require
+                    more frequent baths, while others with water-repellent coats should be bathed less often.</p>
+            </li>
+            <li class="tip">
+                <h2>Brushing</h2>
+                <p>Brush your pet's coat regularly to remove loose fur, dirt, and tangles. This helps prevent mats and
+                    reduces shedding. Use a brush suitable for your pet's coat type, whether it's short, long, curly, or
+                    double-coated.</p>
+                <p>Brushing your pet's coat not only keeps their fur looking neat but also stimulates blood flow to the
+                    skin and distributes natural oils, promoting a healthy and shiny coat.</p>
+            </li>
+            <li class="tip">
+                <h2>Dental Care</h2>
+                <p>Dental hygiene is crucial for your pet's overall health. Brush your pet's teeth regularly with a pet
+                    toothbrush and toothpaste specifically designed for animals. Dental chews and toys can also help
+                    reduce plaque buildup.</p>
+                <p>Poor dental hygiene can lead to dental diseases such as tartar buildup, gum inflammation, and tooth
+                    decay. Brushing your pet's teeth daily or several times a week can prevent these issues and ensure
+                    fresh breath.</p>
+            </li>
+            <li class="tip">
+                <h2>Ear Cleaning</h2>
+                <p>Check your pet's ears regularly for signs of dirt, redness, or odor. Clean their ears gently with a
+                    veterinarian-approved ear cleaner and cotton balls or pads. Avoid inserting anything into the ear
+                    canal.</p>
+                <p>Cleaning your pet's ears helps prevent ear infections and removes excess wax and debris. If you
+                    notice any abnormalities such as discharge or foul odor, consult your veterinarian for further
+                    evaluation.</p>
+            </li>
+            <li class="tip">
+                <h2>Nail Trimming</h2>
+                <p>Keep your pet's nails trimmed to a proper length to prevent overgrowth, discomfort, and potential
+                    injury. Use pet nail clippers or grinders and be careful not to cut the quick, which contains blood
+                    vessels and nerves.</p>
+                <p>Regular nail trimming is essential for maintaining your pet's mobility and preventing problems such
+                    as ingrown nails and broken nails. If you're unsure how to trim your pet's nails safely, ask your
+                    veterinarian or a professional groomer for guidance.</p>
+            </li>
+            <li class="tip">
+                <h2>Eye Care</h2>
+                <p>Check your pet's eyes regularly for any signs of redness, discharge, or irritation. Use a damp cloth
+                    or cotton ball to gently wipe away any debris from the corners of their eyes.</p>
+                <p>Eye problems such as conjunctivitis, corneal ulcers, and tear duct blockages can occur in pets. Early
+                    detection and proper eye care can help prevent complications and preserve your pet's vision.</p>
+            </li>
+            <li class="tip">
+                <h2>Healthy Diet</h2>
+                <p>Provide your pet with a balanced and nutritious diet to support their overall health and coat
+                    condition. Consult with your veterinarian to determine the best diet for your pet's specific needs.
+                </p>
+                <p>A high-quality diet rich in essential nutrients, vitamins, and minerals is essential for your pet's
+                    well-being. Avoid feeding them table scraps or excessive treats, as these can lead to obesity and
+                    other health issues.</p>
+            </li>
+            <li class="tip">
+                <h2>Regular Vet Check-ups</h2>
+                <p>Schedule regular veterinary check-ups for your pet to monitor their health, address any grooming
+                    concerns, and receive preventive care such as vaccinations and parasite control.</p>
+                <p>Regular vet visits are crucial for early detection of health problems and timely intervention. Your
+                    veterinarian can also provide personalized advice on grooming, nutrition, and overall pet care.</p>
+            </li>
+        </ul>
+    </section>
+    <!-- <section id="groomers">
+        <a href="prof_groom/try1.html"><b>Professional Grooming Services</b></a>
+        
+    </section> -->
+
+
+    <script>
+        function toggleSection(sectionId) {
+            var sections = document.getElementsByTagName("section");
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].classList.remove("active");
+            }
+            document.getElementById(sectionId).classList.add("active");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing Address</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  <style>
+    .error {
+      border-color: red;
+    }
+    .error-message {
+      color: red;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <div class="container mx-auto py-10">
+    <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+      <h1 class="text-2xl font-bold mb-6">Billing Address</h1>
+      <form id="billingForm" action="/submitpayment" method="post">
+        <input type="hidden" id="TOTAL" name="TOTAL">
+        <div class="mb-4">
+          <label for="fullName" class="block text-gray-700">Full Name</label>
+          <input type="text" id="fullName" name="fullName" placeholder="John Doe" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
+        </div>
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700">Email</label>
+          <input type="email" id="email" name="email" placeholder="john.doe@example.com" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
+          <p id="emailError" class="error-message hidden">Please enter a valid email address.</p>
+        </div>
+        <div class="mb-4 flex">
+          <div class="mr-2">
+            <label for="countryCode" class="block text-gray-700">Country Code</label>
+            <select id="countryCode"  name="countryCode" class="px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+              <option value="+1">+1 (USA)</option>
+              <option value="+44">+44 (UK)</option>
+              <option value="+91">+91 (India)</option>
+              <!-- Add more options as needed -->
+            </select>
+          </div>
+          <div>
+            <label for="contactNumber" class="block text-gray-700">Contact Number</label>
+            <input type="text" id="contactNumber" name="contactNumber" placeholder="1234567890" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
+            <p id="contactNumberError" class="error-message hidden">Please enter a valid 10-digit contact number.</p>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label for="address" class="block text-gray-700">Address</label>
+          <input type="text" id="address" name="address" placeholder="123 Main St" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
+        </div>
+        <div class="mb-4"> 
+          <label for="city" class="block text-gray-700">City</label>
+          <input type="text" id="city" name="city" placeholder="City" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
+        </div>
+        <div class="mb-4">
+          <label for="state" class="block text-gray-700">State</label>
+          <input type="text" id="state" name="state" placeholder="State" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
+        </div>
+        <div class="mb-4">
+          <label for="zip" class="block text-gray-700">ZIP Code</label>
+          <input type="text" id="zip" name="zip" placeholder="123456" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
+          <p id="zipError" class="error-message hidden">Please enter a valid 6-digit ZIP code.</p>
+        </div>
+        <button type="button" id="payNowButton" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Pay Now
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('payNowButton').addEventListener('click', function() {
+      if (validateForm()) {
+        document.getElementById('TOTAL').value = totalAmount;
+        document.getElementById('billingForm').submit();
+        
+      }
+    });
+
+    function validateForm() {
+      let isValid = true;
+
+      // Validate email
+      const email = document.getElementById('email').value;
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        document.getElementById('email').classList.add('error');
+        document.getElementById('emailError').classList.remove('hidden');
+        isValid = false;
+      } else {
+        document.getElementById('email').classList.remove('error');
+        document.getElementById('emailError').classList.add('hidden');
+      }
+
+      // Validate contact number
+      const contactNumber = document.getElementById('contactNumber').value;
+      const contactNumberPattern = /^\d{10}$/;
+      if (!contactNumberPattern.test(contactNumber)) {
+        document.getElementById('contactNumber').classList.add('error');
+        document.getElementById('contactNumberError').classList.remove('hidden');
+        isValid = false;
+      } else {
+        document.getElementById('contactNumber').classList.remove('error');
+        document.getElementById('contactNumberError').classList.add('hidden');
+      }
+
+      // Validate ZIP code
+      const zip = document.getElementById('zip').value;
+      const zipPattern = /^\d{6}$/;
+      if (!zipPattern.test(zip)) {
+        document.getElementById('zip').classList.add('error');
+        document.getElementById('zipError').classList.remove('hidden');
+        isValid = false;
+      } else {
+        document.getElementById('zip').classList.remove('error');
+        document.getElementById('zipError').classList.add('hidden');
+      }
+
+      return isValid;
+    }
+  document.addEventListener('DOMContentLoaded', () => {
+    let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function renderCartItems() {
+      const cartList = document.getElementById('cartItems');
+      const totalAmountElement = document.getElementById('totalAmount');
+      if (!cartList) return;
+
+      cartList.innerHTML = '';
+      let total = 0;
+
+      cartItems.forEach((item, index) => {
+        const listItem = document.createElement('li');
+        listItem.classList.add('flex', 'justify-between', 'items-center', 'space-x-4');
+        listItem.innerHTML = `
+          <img src="${item.img}" alt="${item.name}" class="w-16 h-16 object-cover">
+          <span>${item.name} - ₹${item.price}</span>
+          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded removeFromCartBtn" data-index="${index}">Remove</button>
+        `;
+        cartList.appendChild(listItem);
+        total += item.price;
+      });
+
+      const totalItem = document.createElement('li');
+      totalItem.textContent = `Total: ₹${total}`;
+      cartList.appendChild(totalItem);
+
+      const removeFromCartButtons = document.querySelectorAll('.removeFromCartBtn');
+      removeFromCartButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          const itemIndex = parseInt(this.getAttribute('data-index'));
+          removeFromCart(itemIndex);
+        });
+      });
+
+      // Display total amount
+      totalAmountElement.innerText = `Total Amount: ₹${total}`;
+    }
+
+    function removeFromCart(index) {
+      cartItems.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+      renderCartItems();
+      updateTotalAmount();
+    }
+
+    function updateTotalAmount() {
+      let total = cartItems.reduce((acc, curr) => acc + curr.price, 0);
+      document.getElementById('totalAmount').innerText = `Total Amount: ₹${total}`;
+    }
+
+    // Handle buy button click
+    document.getElementById('payNowButton')?.addEventListener('click', (event) => {
+      if (cartItems.length > 0) {
+        const totalAmount = cartItems.reduce((acc, curr) => acc + curr.price, 0);
+        // Redirect to payment page with total amount as query parameter
+        document.getElementById('TOTAL').value = totalAmount;
+        document.getElementById('billingForm').submit();
+      } else {
+        alert('Your cart is empty!');
+        event.preventDefault(); // Prevent default action (redirecting to the payment page)
+      }
+    });
+
+    renderCartItems();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previous Bills</title>
+    <!-- Include any necessary CSS stylesheets here -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+        <a href="{{url_for('home')}}" class="absolute top-4 left-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Home</a>
+    <h1>Previous Bills</h1>
+    {% if bills %}
+    <table>
+        <thead>
+            <tr>
+
+                <th>Name</th>
+                <th>Email</th>
+                <th>Country Code</th>
+                <th>Contact Number</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>State</th>
+                <th>ZIP Code</th>
+                <th>Username</th>
+                <!-- Add more table headers as needed -->
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for bill in bills %}
+            <tr>
+                
+                <td>{{ bill['name'] }}</td>
+                <td>{{ bill['mail'] }}</td>
+                <td>{{ bill['countrycode'] }}</td>
+                <td>{{ bill['phoneno'] }}</td>
+                <td>{{ bill['address'] }}</td>
+                <td>{{ bill['city'] }}</td>
+                <td>{{ bill['state'] }}</td>
+                <td>{{ bill['zipcode'] }}</td>
+                <td>{{ bill['username'] }}</td>
+                <!-- Add more table cells to display additional bill details -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No previous bills found.</p>
+    {% endif %}
+</body>
+
+</html>

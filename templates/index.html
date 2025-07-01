@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css')}}">
+    
+    <title>pawfect care</title>
+</head>
+<body>
+    <script src="{{ url_for('static',filename='script.js')}}"></script>
+    <script>
+        function opentab(tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-contents");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-links");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active-link", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            event.currentTarget.className += " active-link";
+        }
+        function validateForm() {
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            var message = document.getElementById('message').value;
+    
+            return true;
+        }
+        
+    
+</script>
+
+<div id="header">
+    <div class="container">
+        <nav>
+            <img src="{{url_for('static', filename='img3.jpg')}}" class="logo" width="200px">
+            <ul id="sidemenu" style="padding-left: 5%;">
+                <li><a href="/adoption"><b>Adopt a pet</b></a></li>
+                <li><a href="/grooming"><b>Grooming services</b></a></li>
+                <li><a href="/petcare"><b>PetCare</b></a></li>
+                <li><a href="/petshop"><b>PetShop</b></a></li>
+                <li><a href="/identify"><b>Identify Breed</b></a></li>
+                <li><a href="/chatbot"><b>Chatbot</b></a></li>
+                <li><a href="/logout"><b>LogOut</b></a></li>
+                <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
+            </ul>
+            <i class="fa-solid fa-bars" onclick="openmenu()"></i>
+        </nav>
+        <div class="header-text">
+            <h1 style="padding-top: 10%;padding-left: 20%;">PawfectCare Platform</h1>
+        </div>
+    </div>
+</div>
+
+<div id="about">
+    <div class="container">
+        <div class="row">
+            <div class="about-col-1">
+                <img src="{{url_for('static', filename='img2.jpg')}}" alt="">
+            </div>
+            <div class="about-col-2">
+                <h1 class="sub-title">About platform</h1>
+                <p>
+                    Pets are cherished members of many households, but ensuring their
+                     well-being requires access to essential services and resources. Additionally,  
+                     understanding a pet's breed is crucial for tailoring care and addressing specific needs.
+                      We aim to empower pet owners to provide the best possible care for their beloved companions
+                </p>
+                
+            </div>
+        </div>
+    </div>
+    <a href="#" class="back-to-top">Back to Top</a>
+</div>
+
+    <div id="profile-logo"></div>
+
+    <script src="{{ url_for('static',filename='script.js')}}"></script>
+</div>
+
+
+
+<script>
+    document.querySelectorAll('.back-to-top').forEach(link => {
+        link.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+</body>
+</html>

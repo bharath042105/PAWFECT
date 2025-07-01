@@ -1,0 +1,21 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+#petList {
+    margin-top: 20px;
+}
+
+.pet-item {
+    margin-bottom: 20px;
+}
+
+.pet-item img {
+    max-width: 200px;
+    display: block;
+}

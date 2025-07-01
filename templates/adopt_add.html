@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Adoption Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='add.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            color: #333;
+        }
+        input[type="text"], input[type="file"], input[type="number"], select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pet Adoption Form</h1>
+    <form id="adoptionForm" enctype="multipart/form-data" action="/submit" method="post">
+        <label for="petName">Pet Name:</label>
+        <input type="text" id="petName" name="petName" required>
+
+        <label for="ownerName">Owner Name:</label>
+        <input type="text" id="ownerName" name="ownerName" required>
+
+        <label for="petImage">Pet Image:</label>
+        <input type="file" id="petImage" name="petImage" accept="image/*" required>
+
+        <label for="petAge">Pet Age (in months):</label>
+        <input type="number" id="petAge" name="petAge" required>
+
+        <label for="petBreed">Pet Breed:</label>
+        <input type="text" id="petBreed" name="petBreed" required>
+
+        <label for="petGender">Pet Gender:</label>
+        <select id="petGender" name="petGender" required>
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+        </select>
+
+        <label for="petVaccinated">Pet Vaccinated:</label>
+        <select id="petVaccinated" name="petVaccinated" required>
+            <option value="">Select Vaccination Status</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
+
+        <label for="petState">State:</label>
+        <input type="text" id="petState" name="petState" required>
+
+        <label for="petCity">City:</label>
+        <input type="text" id="petCity" name="petCity" required>
+
+        <label for="contact">Contact:</label>
+        <input type="text" id="contact" name="contact" pattern="[0-9]{10}" title="Please enter a 10-digit contact number" required>
+        <div class="error-message">Please enter a 10-digit contact number.</div>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

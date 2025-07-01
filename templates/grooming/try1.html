@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  /* Add CSS styles for better presentation */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    padding: 20px;
+  }
+
+  /* Add CSS styles for better presentation */
+  .groomer {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .groomer-info {
+    flex: 1;
+    margin-left: 20px;
+  }
+
+  .groomer h2 {
+    margin-top: 0;
+  }
+
+  .groomer p {
+    margin-bottom: 10px;
+  }
+
+  .groomer ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .groomer li {
+    margin-bottom: 5px;
+  }
+
+  .review {
+    border-left: 3px solid #007bff;
+    padding-left: 10px;
+  }
+
+  .groomer-img {
+    width: 250px;
+    height: 250px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Responsive styles */
+  @media screen and (max-width: 600px) {
+    .groomer {
+      flex-direction: column;
+    }
+
+    .groomer-info {
+      margin-left: 0;
+      text-align: center;
+    }
+  }
+
+  /* Hide form initially */
+  #groomingForm {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<h2><center>Mobile Grooming Vans</center></h2>
+<a href="/grooming" class="absolute top-4 left-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Home</a>
+<br>
+<div id="groomers-container"></div>
+
+<button id="bookButton">Book Grooming Services</button>
+
+<!-- Form for booking grooming services -->
+<form id="groomingForm" action="process_booking.php" method="post">
+  <label for="name">Your Name:</label>
+  <input type="text" id="name" name="name" required><br><br>
+  
+  <label for="contactNumber">Contact Number:</label>
+  <input type="tel" id="contactNumber" name="contactNumber" maxlength="10" required><br><br>
+
+  
+  <label for="petName">Pet Name:</label>
+  <input type="text" id="petName" name="petName" required><br><br>
+  
+  <label for="age">Pet Age:</label>
+  <input type="number" id="age" name="age" required><br><br>
+  
+  <label for="breed">Pet Breed:</label>
+  <input type="text" id="breed" name="breed" required><br><br>
+  
+  <label for="groomerSelect">Select Groomer:</label>
+  <select id="groomerSelect" name="groomerSelect" required>
+    <option value="Pet Gully">Pet Gully</option>
+    <option value="Wag'n Tails">Wag'n Tails</option>
+    <option value="Barking Dogs">Barking Dogs</option>
+    <option value="Wet Noses">Wet Noses</option>
+    <option value="Mr. Dog">Mr. Dog</option>
+  </select><br><br>
+
+  <label for="location">Location:</label>
+  <input type="text" id="location" name="location" required><br><br>
+
+  <label for="time">Preferred Time:</label>
+  <select id="time" name="time" required>
+    <option value="Morning">Morning</option>
+    <option value="Afternoon">Afternoon</option>
+    <option value="Evening">Evening</option>
+  </select><br><br>
+  
+  <button type="submit" name="save" value="Submit">Book Grooming Services</button>
+</form>
+
+<script>
+  // Groomer data
+  const groomers = [
+    {
+      "_id": "1",
+      "name": "Pet Gully",
+      "location": "Mobile service",
+      "contact": "7337555477",
+      "website": "petgully.com",
+      "rating": 4.5,
+      "reviews": [
+        {
+          "user": "Rajesh Patel",
+          "comment": "Excellent grooming service, highly recommended!",
+          "rating": 5
+        },
+        {
+          "user": "Priya Sharma",
+          "comment": "My pet looks fabulous after grooming, thank you!",
+          "rating": 4.5
+        }
+      ],
+      "image": "{{ url_for('static',filename='grooming_pics/petgul.jpg')}}" // Placeholder image URL
+    },
+    {
+      "_id": "2",
+      "name": "Wag'n Tails",
+      "location": "Mobile service",
+      "contact": "800-513-0304",
+      "website": "wagntails.com",
+      "rating": 4.0,
+      "reviews": [
+        {
+          "user": "Suresh Kumar",
+          "comment": "Great grooming service, my pet loves it here!",
+          "rating": 4.0
+        }
+      ],
+      "image": "{{ url_for('static',filename='grooming_pics/wag.jpg')}}" // Placeholder image URL
+    },
+    {
+      "_id": "3",
+      "name": "Barking Dogs",
+      "location": "Mobile service",
+      "contact": "8664364927",
+      "website":"barking-dogs.com",
+      "rating": 5.0,
+      "reviews": [
+        {
+          "user": "Ananya Singh",
+          "comment": "Best grooming service ever, my pet is so happy!",
+          "rating": 5.0
+        }
+      ],
+      "image": "{{ url_for('static',filename='grooming_pics/barking.jpg')}}" // Placeholder image URL
+    },
+    {
+      "_id": "609b87b59e9a2f4bb845f4b3",
+      "name": "Wet Noses",
+      "location": "Mobile service",
+      "contact": "847-345-5246",
+      "website": "wetnosesgrooming.com",
+      "rating": 5.0,
+      "reviews": [
+        {
+          "user": "Preethi Reddy",
+          "comment": "Fantastic grooming service!",
+          "rating": 5.0
+        }
+      ],
+      "image": "{{ url_for('static',filename='grooming_pics/wet.jpg')}}" // Placeholder image URL
+    },
+    {
+      "_id": "609b87b59e9a2f4bb845f4b4",
+      "name": "Mr. Dog",
+      "location": "Mobile service",
+      "contact": "0867799773",
+      "website": "mrdog.ie",
+      "rating": 4.5,
+      "reviews": [
+        {
+          "user": "Amit Gupta",
+          "comment": "Highly recommended groomer, excellent service!",
+          "rating": 4.5
+        }
+      ],
+      "image": "{{ url_for('static',filename='grooming_pics/mr.dog.jpg')}}" // Placeholder image URL
+    }
+  ];
+
+  // Function to render groomer information
+  function renderGroomers() {
+    const groomersContainer = document.getElementById('groomers-container');
+
+    groomers.forEach(groomer => {
+      const groomerDiv = document.createElement('div');
+      groomerDiv.classList.add('groomer');
+
+      // Construct HTML for groomer details
+      groomerDiv.innerHTML = `
+        <img src="${groomer.image}" alt="${groomer.name}" class="groomer-img">
+        <div class="groomer-info">
+          <h2>${groomer.name}</h2>
+          <p><strong>Location:</strong> ${groomer.location}</p>
+          <p><strong>Contact:</strong> ${groomer.contact}</p>
+          <p><strong>Website:</strong> <a href="http://${groomer.website}" target="_blank">${groomer.website}</a></p>
+          <p><strong>Rating:</strong> ${groomer.rating}</p>
+          <p><strong>Reviews:</strong></p>
+          <ul>
+            ${groomer.reviews.map(review => `
+              <li class="review">
+                <strong>${review.user}</strong>: ${review.comment} (Rating: ${review.rating})
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      `;
+
+      groomersContainer.appendChild(groomerDiv);
+    });
+  }
+
+  // Call the function to render groomers when the page loads
+  document.addEventListener('DOMContentLoaded', renderGroomers);
+
+  // Show form when button is clicked
+  document.getElementById('bookButton').addEventListener('click', function() {
+    document.getElementById('groomingForm').style.display = 'block';
+  });
+</script>
+
+</body>
+</html>

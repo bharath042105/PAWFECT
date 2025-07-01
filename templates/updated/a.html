@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    
+    <title>pawfect care</title>
+</head>
+<body>
+    <script src="script.js"></script>
+    <script>
+        function opentab(tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-contents");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-links");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active-link", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            event.currentTarget.className += " active-link";
+        }
+        function validateForm() {
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            var message = document.getElementById('message').value;
+    
+            return true;
+        }
+        
+    
+</script>
+
+<div id="header">
+    <div class="container">
+        <nav>
+            <img src="img3.jpg" class="logo" width="200px">
+            <ul id="sidemenu" style="padding-left: 5%;">
+                <li><a href="#header"><b>Adopt a pet</b></a></li>
+                <li><a href="#about"><b>Grooming services</b></a></li>
+                <li><a href="#Must_vistit_places"><b>Veterinary Care</b></a></li>
+                <li><a href="#contact"><b>Identify Breed</b></a></li>
+                <li><a href="#google-map"><b>Community Support</b></a></li>
+                <li><a href="#Login"><b>Login/Sign Up</b></a></li>
+                <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
+            </ul>
+            <i class="fa-solid fa-bars" onclick="openmenu()"></i>
+        </nav>
+        <div class="header-text">
+            <h1 style="padding-top: 10%;padding-left: 20%;">PawfectCare Platform</h1>
+        </div>
+    </div>
+</div>
+
+<div id="about">
+    <div class="container">
+        <div class="row">
+            <div class="about-col-1">
+                <img src="img2.jpg" alt="">
+            </div>
+            <div class="about-col-2">
+                <h1 class="sub-title">About platform</h1>
+                <p>
+                    Pets are cherished members of many households, but ensuring their
+                     well-being requires access to essential services and resources. Additionally,  
+                     understanding a pet's breed is crucial for tailoring care and addressing specific needs.
+                      We aim to empower pet owners to provide the best possible care for their beloved companions
+                </p>
+                
+            </div>
+        </div>
+    </div>
+    <a href="#" class="back-to-top">Back to Top</a>
+</div>
+
+<div id="Login">
+    
+    <div id="login">
+        <!-- Login Form -->
+        <form action="/login" method="POST">
+            <h2>Login</h2>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <button type="submit" onclick="loginFunction(event)">Log in</button>
+        </form>
+        <p>Don't have an account? <a href="#" onclick="return showSignupForm()">Sign up</a>.</p>
+    </div>
+
+    <div id="signup" style="display: none;">
+        <!-- Signup Form -->
+        <form action="/signup" method="POST">
+            <h2>Sign Up</h2>
+            <label for="newEmail">Email:</label>
+            <input type="email" id="newEmail" name="newEmail" required>
+            <br>
+            <label for="newPassword">Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required>
+            <br>
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+            <br>
+            <button type="submit" onclick="signupFunction(event)">Sign up</button>
+        </form>
+    </div>
+    <div id="profile-logo"></div>
+
+    <script src="script.js"></script>
+</div>
+
+
+
+<script>
+    document.querySelectorAll('.back-to-top').forEach(link => {
+        link.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+</body>
+</html>

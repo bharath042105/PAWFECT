@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-blue-100 dark:bg-zinc-800">
+  <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-4xl font-bold text-center text-zinc-900 dark:text-zinc-100 uppercase mb-8">Shopping Cart</h1>
+    <ul id="cartItems" class="bg-white dark:bg-zinc-900 rounded-lg p-6 shadow-lg space-y-4">
+      <!-- Cart items will be dynamically inserted here -->
+    </ul>
+    <div id="totalAmount" class="text-2xl font-bold text-center text-zinc-900 dark:text-zinc-100 mt-4">
+      <!-- Total amount will be displayed here -->
+    </div>
+    <button id="buyButton" class="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Buy Now</button>
+    <a href="{{ url_for('petshop') }}" class="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Continue Shopping</a>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+
+      function renderCartItems() {
+        const cartList = document.getElementById('cartItems');
+        const totalAmountElement = document.getElementById('totalAmount');
+        if (!cartList) return;
+
+        cartList.innerHTML = '';
+        let total = 0;
+
+        cartItems.forEach((item, index) => {
+          const listItem = document.createElement('li');
+          listItem.classList.add('flex', 'justify-between', 'items-center', 'space-x-4');
+          listItem.innerHTML = `
+            <img src="${item.img}" alt="${item.name}" class="w-16 h-16 object-cover">
+            <span>${item.name} - ₹${item.price}</span>
+            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded removeFromCartBtn" data-index="${index}">Remove</button>
+          `;
+          cartList.appendChild(listItem);
+          total += item.price;
+        });
+
+        const totalItem = document.createElement('li');
+        totalItem.textContent = `Total: ₹${total}`;
+        cartList.appendChild(totalItem);
+
+        const removeFromCartButtons = document.querySelectorAll('.removeFromCartBtn');
+        removeFromCartButtons.forEach(button => {
+          button.addEventListener('click', function () {
+            const itemIndex = parseInt(this.getAttribute('data-index'));
+            removeFromCart(itemIndex);
+          });
+        });
+
+        // Display total amount
+        totalAmountElement.innerText = `Total Amount: ₹${total}`;
+      }
+
+      function removeFromCart(index) {
+        cartItems.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cartItems));
+        renderCartItems();
+        updateTotalAmount();
+      }
+
+      function updateTotalAmount() {
+        let total = cartItems.reduce((acc, curr) => acc + curr.price, 0);
+        document.getElementById('totalAmount').innerText = `Total Amount: ₹${total}`;
+      }
+
+      // Handle buy button click
+      document.getElementById('buyButton')?.addEventListener('click', (event) => {
+        if (cartItems.length > 0) {
+          const totalAmount = cartItems.reduce((acc, curr) => acc + curr.price, 0);
+
+          // Redirect to payment page with total amount as query parameter
+          window.location.href = `/bill?total=${totalAmount}`;
+        } else {
+          alert('Your cart is empty!');
+          event.preventDefault(); // Prevent default action (redirecting to the payment page)
+        }
+      });
+
+      renderCartItems();
+    });
+  </script>
+</body>
+
+</html>

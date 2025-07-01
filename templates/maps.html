@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Azure Maps - Find Dog Grooming Stores</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/3/atlas.min.css" type="text/css">
+    <style>
+        #myMap {
+            height: 400px;
+            width: 100%;
+        }
+        #searchForm {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        #results {
+            margin-top: 20px;
+        }
+        .store {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        /* Ensure the cursor is always visible over the map */
+        #myMap * {
+            cursor: default !important;
+        }
+        .customMarker {
+            z-index: 1001;
+            font-size: 24px;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Pet Clinics and Stores</h1>
+    <a href="{{ url_for('home') }}" class="absolute top-4 left-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Home</a>
+    <br><br>
+    <div id="searchForm">
+        <input type="text" id="locationInput" placeholder="Enter location" />
+        <button id="searchButton">Search</button>
+    </div>
+    <div id="myMap"></div>
+    <div id="results"></div>
+
+    <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/3/atlas.min.js"></script>
+
+    <script>
+        // Replace with your actual Azure Maps API key
+        const subscriptionKey = 'FpR7R1zArriFKFGL81k2i9Bji2z9vdiOrjF7WZVS7fs794RKhkFrJQQJ99AFACYeBjFA04gDAAAgAZMPCqZ9';
+        let userLat, userLon;
+
+        // Initialize the map
+        const map = new atlas.Map('myMap', {
+            center: [78.9629, 20.5937], // Default to India
+            zoom: 5,
+            authOptions: {
+                authType: 'subscriptionKey',
+                subscriptionKey: subscriptionKey
+            }
+        });
+
+        // Function to calculate the distance between two points using the Haversine formula
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const toRad = (value) => value * Math.PI / 180;
+            const R = 6371; // Radius of the Earth in kilometers
+            const dLat = toRad(lat2 - lat1);
+            const dLon = toRad(lon2 - lon1);
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        // Function to search for dog grooming stores
+        // Function to search for dog grooming stores within 10 km range
+function searchDogGroomingStores(lat, lon) {
+    const searchURL = `https://atlas.microsoft.com/search/poi/json?subscription-key=${subscriptionKey}&api-version=1.0&query=dog%20grooming&limit=10&lat=${lat}&lon=${lon}&categories=pet%20services`;
+
+
+    fetch(searchURL)
+        .then(response => response.json())
+        .then(data => {
+            // Clear previous results
+            document.getElementById('results').innerHTML = '';
+            data.results.forEach(result => {
+                const storeLat = result.position.lat;
+                const storeLon = result.position.lon;
+                const distance = calculateDistance(lat, lon, storeLat, storeLon);
+
+                if (distance <= 10) { // Only show places within 10 km range
+                    // Create a marker for each result
+                    const marker = new atlas.HtmlMarker({
+                        position: [storeLon, storeLat],
+                        htmlContent: '<div class="customMarker">🐶</div>',
+                        popup: new atlas.Popup({
+                            content: `<div style="padding:5px;"><b>${result.poi.name}</b><br>${result.address.freeformAddress}<br>${distance.toFixed(2)} km away</div>`
+                        })
+                    });
+
+                    // Add the marker to the map
+                    map.markers.add(marker);
+
+                    // Add a click event to open the popup
+                    map.events.add('click', marker, () => {
+                        marker.togglePopup();
+                    });
+
+                    // Add the store details to the results section
+                    const storeDiv = document.createElement('div');
+                    storeDiv.className = 'store';
+                    storeDiv.innerHTML = `<b>${result.poi.name}</b><br>${result.address.freeformAddress}<br>${distance.toFixed(2)} km away`;
+                    document.getElementById('results').appendChild(storeDiv);
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+        // Function to handle the search form submission
+        function handleSearch() {
+            const location = document.getElementById('locationInput').value;
+
+            // If a location is entered, use it; otherwise, use the user's current location
+            if (location) {
+                // Search for the location's coordinates
+                const geocodeURL = `https://atlas.microsoft.com/search/address/json?subscription-key=${subscriptionKey}&api-version=1.0&query=${encodeURIComponent(location)}`;
+
+                fetch(geocodeURL)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.results.length > 0) {
+                            const result = data.results[0];
+                            const lat = result.position.lat;
+                            const lon = result.position.lon;
+
+                            // Center the map on the searched location
+                            map.setCamera({
+                                center: [lon, lat],
+                                zoom: 12
+                            });
+
+                            // Search for nearby dog grooming stores
+                            searchDogGroomingStores(lat, lon);
+                        } else {
+                            alert('Location not found.');
+                        }
+                    })
+                    .catch(error => console.error('Error fetching geocode data:', error));
+            } else if (userLat && userLon) {
+                // Use the user's current location
+                map.setCamera({
+                    center: [userLon, userLat],
+                    zoom: 12
+                });
+                searchDogGroomingStores(userLat, userLon);
+            } else {
+                alert('Please enter a location or allow geolocation.');
+            }
+        }
+
+        // Get the user's current location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                userLat = position.coords.latitude;
+                userLon = position.coords.longitude;
+
+                // Center the map on the user's location
+                map.setCamera({
+                    center: [userLon, userLat],
+                    zoom: 12
+                });
+
+                // Add a marker for the user's current location
+                const userMarker = new atlas.HtmlMarker({
+                    position: [userLon, userLat],
+                    htmlContent: '<div class="customMarker">📍</div>',
+                    popup: new atlas.Popup({
+                        content: `<div style="padding:5px;">You are here</div>`
+                    })
+                });
+
+                map.markers.add(userMarker);
+
+                // Search for nearby dog grooming stores
+                searchDogGroomingStores(userLat, userLon);
+            }, error => {
+                console.error('Error getting location:', error);
+            });
+        } else {
+            alert('Geolocation is not supported by this browser.');
+        }
+
+        // Add event listener for the search button
+        document.getElementById('searchButton').addEventListener('click', handleSearch);
+    </script>
+</body>
+</html>
+

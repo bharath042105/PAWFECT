@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Display</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    @media (min-width: 768px) {
+      .grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-blue-100 dark:bg-zinc-800">
+  <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h1 class="text-4xl font-bold text-center text-zinc-900 dark:text-zinc-100 uppercase py-8">PetShop</h1>
+    <a href="{{url_for('home')}}" class="absolute top-4 left-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Home</a>
+    <a href="{{url_for('cart')}}" class="absolute top-4 right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">CART</a>
+
+    <div class="flex flex-wrap justify-center gap-4">
+      <!-- Pet Food Option -->
+      <div class="bg-white dark:bg-zinc-900 rounded-lg p-6 shadow-lg flex items-center space-x-4 w-110 h-50"> <!-- Adjusted width and height -->
+        <div class="flex-shrink-0">
+          <img src="{{ url_for('static', filename='petshop/i1.jpeg') }}" alt="Pet Food" class="rounded-full w-24 h-24 object-cover" />
+        </div>
+        <div>
+          <div class="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+            Delicious Pet Food
+          </div>
+          <p class="text-zinc-500 dark:text-zinc-300">For Dogs </p>
+          <a href="{{url_for('petfood')}}" class="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">SHOP NOW</a>
+        </div>
+      </div>
+
+      <!-- Puppy Toys Option -->
+      <div class="bg-white dark:bg-zinc-900 rounded-lg p-6 shadow-lg flex items-center space-x-4 w-110 h-50"> <!-- Adjusted width and height -->
+        <div class="flex-shrink-0">
+          <img src="{{ url_for('static', filename='petshop/i2.jpg') }}" alt="Puppy Toys" class="rounded-full w-24 h-24 object-cover" />
+        </div>
+        <div>
+          <div class="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+            Amazing Toys for Puppy
+          </div>
+          <p class="text-zinc-500 dark:text-zinc-300">Funny & Interesting</p>
+          <a href="{{url_for('toys')}}" class="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">SHOP NOW</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-2xl font-bold text-center text-zinc-900 dark:text-zinc-100 mt-8">Products recommended by us</p>
+
+    <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      <!-- Products will be dynamically inserted here -->
+    </div>
+  </div>
+  <script src="{{ url_for('static',filename='petshop/script.js')}}"></script>
+  
+</body>
+
+</html>
