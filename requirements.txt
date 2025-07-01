@@ -18,9 +18,8 @@ h5py==3.11.0
 idna==3.7
 itsdangerous==2.2.0
 Jinja2==3.1.4
-Keras==2.15.0
-Keras-Applications==1.0.8
-Keras-Preprocessing==1.1.2
+keras==3.3.3
+
 kiwisolver==1.4.5
 Markdown==3.6
 MarkupSafe==2.1.5
